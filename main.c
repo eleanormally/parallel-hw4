@@ -57,7 +57,7 @@ void* compute_pi(void* s) {
   double x, y;
   for (int i = 0; i < args->sampleCount; i++) {
     drand48_r(&seed_data, &x);
-    drand48_r(&seed_data, &x);
+    drand48_r(&seed_data, &y);
     if (x * x + y * y < 1.0) {
       args->result++;
     }
