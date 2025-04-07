@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
   bool strongScaling = argc > 2 && strcmp(argv[2], "--strong") == 0;
   u64  sampleCount = 8 * (1ul << 30);
   if (strongScaling) {
-    sampleCount = (2ul << 30) / threadCount * 32;
+    sampleCount = (1ul << 30) / threadCount * 32;
   }
 
   ThreadArgs arguments[threadCount];
@@ -53,9 +53,11 @@ void* compute_pi(void* s) {
   ThreadArgs* args = (ThreadArgs*)s;
   args->result = 0;
   struct drand48_data seed_data;
-  srand48_r((u64)s, &seed_data);
+
+  u64 seed = (u64)s;
+  srand48_r(seed, &seed_data);
   double x, y;
-  for (int i = 0; i < args->sampleCount; i++) {
+  for (u64 i = 0; i < args->sampleCount; i++) {
     drand48_r(&seed_data, &x);
     drand48_r(&seed_data, &y);
     if (x * x + y * y < 1.0) {
